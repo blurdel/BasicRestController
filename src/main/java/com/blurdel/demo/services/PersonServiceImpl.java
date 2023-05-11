@@ -14,16 +14,16 @@ public class PersonServiceImpl implements PersonService {
 
 	@Autowired
 	private PersonRepo personRepo;
-	
-	
-	@Override
-	public Optional<Person> getById(Long id) {
-		return personRepo.findById(id);
-	}
 
+	
 	@Override
 	public List<Person> getAll() {
 		return personRepo.findAll();
+	}
+
+	@Override
+	public Optional<Person> getById(Long id) {
+		return personRepo.findById(id);
 	}
 
 	@Override
@@ -32,9 +32,20 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	@Override
+	public Person update(Person person) {
+		Optional<Person> opt = personRepo.findById(person.getId());
+		if (!opt.isPresent()) {
+			return null;
+		}
+		Person updated = opt.get(); // retain original id value
+		updated.setName(person.getName());
+		updated.setAge(person.getAge());
+		return personRepo.save(updated);
+	}
+
+	@Override
 	public void delete(Long id) {
 		personRepo.deleteById(id);
-		
 	}
 
 }
