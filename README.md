@@ -1,2 +1,2 @@
 # BasicRestController
-Basic Spring Boot REST Controller example
+Basic Spring Boot REST Controller example using a MySQL database
