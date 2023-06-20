@@ -1,13 +1,23 @@
-FROM openjdk:17
+FROM openjdk:17-jdk-slim as builder
 
-COPY target/BasicRestController-0.0.1-SNAPSHOT.jar service.jar
+WORKDIR application
+
+# Set application jar-filename
+ARG JAR_FILE=target/BasicRestController-0.0.1-SNAPSHOT.jar
+
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
+
+
+FROM openjdk:17-jdk-slim
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "service.jar"]
+WORKDIR application
 
-# build image
-# docker build -t basic-rest-controller:1.0.0 .
+COPY --from=builder application/dependencies/ ./
+COPY --from=builder application/spring-boot-loader/ ./
+COPY --from=builder application/snapshot-dependencies/ ./
+COPY --from=builder application/application/ ./
 
-# build container
-# docker run -d --name basic-rest-controller -p 8080:8080 basic-rest-controller:1.0.0
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
