@@ -1,0 +1,27 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: SPRING
+      MYSQL_USER: tmuser
+      MYSQL_PASSWORD: tmuser
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - ./mydata:/var/lib/mysql
+
+  rest-app:
+    image: basic-rest-controller:1.0.0
+    ports: 
+      - 8080:8080
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: SPRING
+      MYSQL_USER: tmuser
+      MYSQL_PASSWORD: tmuser
+      
+volumes:
+  mydata:
