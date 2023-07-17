@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: blurdel/mysql8:mods
+        image: mysql:8.0
         ports:
         - containerPort: 3306
         env:
