@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: person-webapp
-        image: blurdel/basic-rest-controller:1.0.0
+        image: basic-rest-controller:1.0.0
         ports:
         - containerPort: 8080
         env:
@@ -35,6 +35,8 @@ spec:
             configMapKeyRef:
               name: mysql-config
               key: mysql-url
+        - name: SPRING_PROFILES_ACTIVE
+          value: rke
 ---
 apiVersion: v1
 kind: Service
