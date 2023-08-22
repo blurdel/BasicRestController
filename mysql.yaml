@@ -38,6 +38,13 @@ spec:
             secretKeyRef:
               name: mysql-secret
               key: root-password
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-storage
+        persistantVolumeClaim:
+          claimType: mysql-pv-claim
 ---
 apiVersion: v1
 kind: Service
