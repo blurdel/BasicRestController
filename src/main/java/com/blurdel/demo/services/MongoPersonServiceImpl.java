@@ -27,7 +27,7 @@ public class MongoPersonServiceImpl implements PersonService {
 
 	@Override
 	public Person findById(String id) {
-		return repo.findById(id);
+		return repo.findById(id).orElse(null);
 	}
 
 	@Override
