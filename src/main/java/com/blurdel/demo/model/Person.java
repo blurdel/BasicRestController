@@ -1,5 +1,6 @@
 package com.blurdel.demo.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,12 +12,21 @@ public class Person {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-		
+
+	@Column(unique=true, nullable=false)
 	private String name;
 	
 	private int age;
-	
-	
+
+
+	public Person() {
+	}
+
+	public Person(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -9,12 +9,12 @@ public interface PersonService {
 	
 	List<Person> getAll();
 	
-	Optional<Person> getById(Long id);
+	Person getById(Long id);
 			
 	Person add(Person person);
 	
 	Person update(Person person);
 	
-	void delete(Long id);	
+	Person delete(Long id);
 
 }

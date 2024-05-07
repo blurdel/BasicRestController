@@ -22,8 +22,8 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	@Override
-	public Optional<Person> getById(Long id) {
-		return personRepo.findById(id);
+	public Person getById(Long id) {
+		return personRepo.findById(id).orElse(null);
 	}
 
 	@Override
@@ -44,8 +44,12 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	@Override
-	public void delete(Long id) {
-		personRepo.deleteById(id);
+	public Person delete(Long id) {
+		Person person = getById(id);
+		if (person != null) {
+			personRepo.deleteById(person.getId());
+		}
+		return person;
 	}
 
 }

@@ -34,36 +34,39 @@ public class PersonController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getOne(@PathVariable Long id) {
-		Optional<Person> opt = service.getById(id);
-		if (opt.isPresent()) {
-			return new ResponseEntity<>(opt.get(), HttpStatus.OK);
+		Person person = service.getById(id);
+		if (person == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(person, HttpStatus.OK);
 	}
 	
 	@PostMapping
 	public ResponseEntity<?> addNewPerson(@RequestBody Person person) {
 		Person saved = service.add(person);
-		if (saved != null) {
-			return new ResponseEntity<>(saved, HttpStatus.CREATED);
+		if (saved == null) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(saved, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updatePerson(@PathVariable Long id, @RequestBody Person person) {
 		person.setId(id);
 		Person updated = service.update(person);
-		if (updated != null) {
-			return new ResponseEntity<>(updated, HttpStatus.CREATED);				
+		if (updated == null) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(updated, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteOne(@PathVariable Long id) {
-		service.delete(id);
+	public ResponseEntity<?> deleteOne(@PathVariable Long id) {
+		Person deleted = service.delete(id);
+		if (deleted == null) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(deleted, HttpStatus.OK);
 	}
 	
 }
