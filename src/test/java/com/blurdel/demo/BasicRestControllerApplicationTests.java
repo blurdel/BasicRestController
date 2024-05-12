@@ -61,8 +61,11 @@ class BasicRestControllerApplicationTests {
 	@Order(2)
 	void testRestGetAll() throws Exception {
 		mockMvc.perform(get("/person"))
-//				.andDo(print())
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(jsonPath("$[0].id").value(1))
+				.andExpect(jsonPath("$[0].name").value("Zoey!"));
 	}
 
 	@Test
@@ -75,7 +78,7 @@ class BasicRestControllerApplicationTests {
 	@Test
 	@Order(4)
 	void testRestGetOne() throws Exception {
-		mockMvc.perform(get("/person/1"))
+		mockMvc.perform(get("/person/{id}", 1L))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -86,19 +89,20 @@ class BasicRestControllerApplicationTests {
 
 	@Test
 	void testRestGetOneFailure() throws Exception {
-		mockMvc.perform(get("/person/0"))
+		mockMvc.perform(get("/person/{id}", 0L))
 				.andExpect(status().isNotFound());
 	}
 
 	@Test
 	void testRestDeleteOne() throws Exception {
-		mockMvc.perform(delete("/person/1"))
+		mockMvc.perform(delete("/person/{id}", 1L))
+				.andDo(print())
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	void testRestDeleteOneFailure() throws Exception {
-		mockMvc.perform(delete("/person/0"))
+		mockMvc.perform(delete("/person/{id}", 0L))
 				.andExpect(status().isNotFound());
 	}
 

@@ -13,7 +13,7 @@ public class Person {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique=true, nullable=false)
+	// @Column(unique=true, nullable=false)
 	private String name;
 	
 	private int age;
