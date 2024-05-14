@@ -1,6 +1,7 @@
 package com.blurdel.demo.controllers;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class PersonController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getOne(@PathVariable String id) {
+		Objects.requireNonNull(id, "id can not be null");
+
 		Person person = service.findById(id);
 		if (person == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -59,8 +62,7 @@ public class PersonController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		
-		person.setId(String.valueOf(id));
-		Person updated = service.update(person);
+		Person updated = service.update(new Person(String.valueOf(id), person.getName(), person.getAge()));
 		if (updated == null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
@@ -69,6 +71,8 @@ public class PersonController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteOne(@PathVariable String id) {
+		Objects.requireNonNull(id, "id can not be null");
+
 		Person deleted = service.delete(id);
 		if (deleted == null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
