@@ -23,18 +23,18 @@ spec:
         - name: USER_NAME
           valueFrom:
             secretKeyRef:
-              name: mysql-secret
-              key: mysql-user
+              name: mongo-secret
+              key: mongo-user
         - name: USER_PWD
           valueFrom:
             secretKeyRef:
-              name: mysql-secret
-              key: mysql-password
+              name: mongo-secret
+              key: mongo-password
         - name: DB_URL
           valueFrom:
             configMapKeyRef:
-              name: mysql-config
-              key: mysql-url
+              name: mongo-config
+              key: mongo-url
         - name: SPRING_PROFILES_ACTIVE
           value: rke
 ---
