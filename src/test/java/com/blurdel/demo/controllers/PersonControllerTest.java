@@ -1,4 +1,4 @@
-package com.blurdel.demo;
+package com.blurdel.demo.controllers;
 
 import com.blurdel.demo.model.Person;
 import com.blurdel.demo.services.PersonService;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class BasicRestControllerApplicationTests {
+class PersonControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;

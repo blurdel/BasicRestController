@@ -1,4 +1,4 @@
-package com.blurdel.demo;
+package com.blurdel.demo.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
