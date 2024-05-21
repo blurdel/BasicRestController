@@ -4,9 +4,7 @@ import com.blurdel.demo.model.Person;
 import com.blurdel.demo.services.PersonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BasicRestControllerApplicationTests {
 
 	@Autowired
@@ -159,7 +156,7 @@ class BasicRestControllerApplicationTests {
 		Person added = service.add(SAMPLE);
 
 		mockMvc.perform(delete("/person/{id}", added.getId()))
-//				.andDo(print())
+				.andDo(print())
 				.andExpect(status().isOk());
 	}
 
