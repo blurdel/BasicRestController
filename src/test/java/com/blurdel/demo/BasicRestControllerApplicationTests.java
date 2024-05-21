@@ -1,9 +1,10 @@
 package com.blurdel.demo;
 
 import com.blurdel.demo.model.Person;
+import com.blurdel.demo.services.PersonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,11 +36,23 @@ class BasicRestControllerApplicationTests {
 	@Autowired
 	private ObjectMapper objMapper;
 
+	@Autowired
+	private PersonService service;
+
+	private static final Person SAMPLE = new Person(null, "Zoey!", 15);
+
 //	@BeforeEach
 //	void setup(WebApplicationContext wac) {
 //		this.mockMvc = MockMvcBuilders.standaloneSetup(new PersonController()).build();
 //		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 //	}
+
+	@AfterEach
+	void cleanup() throws Exception {
+		for (Person p : service.getAll()) {
+			service.delete(p.getId());
+		}
+	}
 
 	@Test
 	void contextLoads() {
@@ -48,43 +64,52 @@ class BasicRestControllerApplicationTests {
 	}
 
 	@Test
-	@Order(1)
 	void testRestPost() throws Exception {
-		// Add a known Entity to get/delete later
 		mockMvc.perform(post("/person")
-						.content(objMapper. writeValueAsString(new Person("Zoey!", 15)))
-						.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isCreated());
+						.content(objMapper.writeValueAsString(SAMPLE))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)
+				)
+				.andExpect(status().isCreated())
+//				.andExpect(jsonPath("$.id").value(1))
+				.andExpect(jsonPath("$.name").value(SAMPLE.getName()))
+				.andExpect(jsonPath("$.age").value(SAMPLE.getAge()));
 	}
 
 	@Test
-	@Order(2)
 	void testRestGetAll() throws Exception {
-		mockMvc.perform(get("/person"))
+		// Insert an entity to GET
+		service.add(SAMPLE);
+
+		mockMvc.perform(get("/person")
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)
+				)
 				.andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andDo(print())
-				.andExpect(jsonPath("$[0].id").value(1))
-				.andExpect(jsonPath("$[0].name").value("Zoey!"));
+				.andExpect(jsonPath("$", hasSize(1)))
+				.andExpect(jsonPath("$[0].name").value(SAMPLE.getName()))
+				.andExpect(jsonPath("$[0].age").value(SAMPLE.getAge()));
 	}
 
 	@Test
-	@Order(3)
-	void testRestGetAllFailure() throws Exception {
+	void testRestGetAllFailureExtraSlash() throws Exception {
 		mockMvc.perform(get("/person/"))
 				.andExpect(status().is4xxClientError());
 	}
 
 	@Test
-	@Order(4)
 	void testRestGetOne() throws Exception {
-		mockMvc.perform(get("/person/{id}", 1L))
+		// Insert an entity to GET
+		Person added = service.add(SAMPLE);
+
+		mockMvc.perform(get("/person/{id}", added.getId())
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)
+				)
 				.andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andDo(print())
-				.andExpect(jsonPath("$.id").value("1"))
-				.andExpect(jsonPath("$.name").value("Zoey!"))
-				.andExpect(jsonPath("$.age").value("15"));
+				.andExpect(jsonPath("$.id").value(added.getId()))
+				.andExpect(jsonPath("$.name").value(added.getName()))
+				.andExpect(jsonPath("$.age").value(added.getAge()));
 	}
 
 	@Test
@@ -93,10 +118,48 @@ class BasicRestControllerApplicationTests {
 				.andExpect(status().isNotFound());
 	}
 
+//	@Test
+//	void test() throws Exception {
+//		mockMvc.perform(get("/person/{id}", 1L)
+//				.param("iscold", "yes") // just testing REST doc
+//				.contentType(MediaType.APPLICATION_JSON)
+//				.accept(MediaType.APPLICATION_JSON)
+//				)
+//				.andExpect(status().isOk());
+//	}
+
+	@Test
+	void testRestUpdateOne() throws Exception {
+		// Insert an entity to UPDATE
+		Person added = service.add(new Person(null, "Fred", 42));
+
+		// Update the values
+		Person updated = new Person(added.getId(), "Zoey!", 15);
+
+//		ResultActions resultActions = mockMvc.perform(put("/person/{id}", updated.getId())
+		mockMvc.perform(put("/person/{id}", updated.getId())
+						.content(objMapper.writeValueAsString(updated))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)
+				)
+//				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(updated.getId()))
+				.andExpect(jsonPath("$.name").value(updated.getName()))
+				.andExpect(jsonPath("$.age").value(updated.getAge()));
+
+//		MvcResult result = resultActions.andReturn();
+//		String body = result.getResponse().getContentAsString();
+//		Person response = objMapper.readValue(body, Person.class);
+	}
+
 	@Test
 	void testRestDeleteOne() throws Exception {
-		mockMvc.perform(delete("/person/{id}", 1L))
-				.andDo(print())
+		// Insert an entity to DELETE
+		Person added = service.add(SAMPLE);
+
+		mockMvc.perform(delete("/person/{id}", added.getId()))
+//				.andDo(print())
 				.andExpect(status().isOk());
 	}
 
