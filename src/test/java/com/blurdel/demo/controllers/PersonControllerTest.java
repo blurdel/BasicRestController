@@ -63,9 +63,9 @@ class PersonControllerTest {
 	@Test
 	void testRestPost() throws Exception {
 		mockMvc.perform(post("/person")
-						.content(objMapper.writeValueAsString(SAMPLE))
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)
+						.content(objMapper.writeValueAsString(SAMPLE))
 				)
 				.andExpect(status().isCreated())
 //				.andExpect(jsonPath("$.id").value(1))
@@ -135,9 +135,9 @@ class PersonControllerTest {
 
 //		ResultActions resultActions = mockMvc.perform(put("/person/{id}", updated.getId())
 		mockMvc.perform(put("/person/{id}", updated.getId())
-						.content(objMapper.writeValueAsString(updated))
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)
+						.content(objMapper.writeValueAsString(updated))
 				)
 //				.andDo(print())
 				.andExpect(status().isOk())
