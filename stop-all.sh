@@ -1,9 +1,6 @@
 #!/bin/bash
 
-kubectl delete -f client-pod.yaml
-
 kubectl delete -f webapp.yaml
-kubectl delete -f mysql.yaml
-kubectl delete -f mysql-pv.yaml
-kubectl delete -f mysql-secret.yaml
-kubectl delete -f mysql-config.yaml
+kubectl delete -f mongo.yaml
+kubectl delete -f mongo-secret.yaml
+kubectl delete -f mongo-config.yaml
