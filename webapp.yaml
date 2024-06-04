@@ -18,7 +18,7 @@ spec:
       - name: person-webapp
         image: localhost:5000/basic-rest-controller:1.0.1
         ports:
-        - containerPort: 8080
+        - containerPort: 3000
         env:
         - name: USER_NAME
           valueFrom:
@@ -43,11 +43,11 @@ kind: Service
 metadata:
   name: person-webapp-service
 spec:
-  type: NodePort
+  type: NodePort # default=ClusterIP
   selector:
     app: person-webapp
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 3000
+      targetPort: 3000
       nodePort: 30100
