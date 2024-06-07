@@ -23,11 +23,16 @@ import com.blurdel.demo.services.PersonService;
 @RequestMapping({"/", "/person"})
 public class PersonController {
 
-	@Autowired
-	private PersonService service;
+//	@Autowired
+	private final PersonService service;
 
 
-	@GetMapping
+    public PersonController(PersonService service) {
+        this.service = service;
+    }
+
+
+    @GetMapping
 	public ResponseEntity<?> getAll() {
 		return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
 	}
