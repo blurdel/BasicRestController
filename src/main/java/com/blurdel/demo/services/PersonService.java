@@ -15,6 +15,8 @@ public interface PersonService {
 	Person update(Person person);
 	
 	Person delete(String id);
+
+	Long deleteAll();
 	
 	Person findByName(String name);
 

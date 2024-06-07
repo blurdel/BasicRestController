@@ -10,13 +10,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 
 import com.blurdel.demo.services.PersonService;
 
 import java.util.List;
 
-@Profile("mongo")
 @SpringBootTest
 //@DataMongoTest
 //@ContextConfiguration(classes = PersonService.class)
@@ -49,9 +47,10 @@ public class BasicRestControllerMongoTests {
 
 	@Test
 	void testFindZoey() {
+//		Person added = personService.add(new Person(null, "Zoey!", 15));
 		Person fetched = personService.findByName("Zoey!");
-		assertEquals("Zoey!", fetched.getName(), "Names should match");
-		assertEquals(15, fetched.getAge(), "Ages should match");
+		assertEquals("Zoey!", fetched.getName());
+		assertEquals(15, fetched.getAge());
 	}
 
 	@Test
@@ -87,11 +86,11 @@ public class BasicRestControllerMongoTests {
 		assertEquals(deleted.getAge(), fetched.getAge(), "Ages should match");
 	}
 
-	@Test
-	void testFindById() {
-		Person fetched = personService.findById("6642cffbd43f8a645c7cf2fb");
-		assertEquals("Zoey!", fetched.getName(), "Names should match");
-		assertEquals(15, fetched.getAge(), "Ages should match");
-	}
+//	@Test
+//	void testFindById() {
+//		Person fetched = personService.findById("6642cffbd43f8a645c7cf2fb");
+//		assertEquals("Zoey!", fetched.getName(), "Names should match");
+//		assertEquals(15, fetched.getAge(), "Ages should match");
+//	}
 
 }

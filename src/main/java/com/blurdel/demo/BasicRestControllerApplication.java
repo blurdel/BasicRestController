@@ -12,11 +12,11 @@ import org.springframework.core.env.Environment;
 public class BasicRestControllerApplication implements CommandLineRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(BasicRestControllerApplication.class);
-			
+
 	@Autowired
     private Environment env;
-	
-	
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(BasicRestControllerApplication.class, args);
 	}

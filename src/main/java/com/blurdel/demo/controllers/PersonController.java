@@ -28,12 +28,12 @@ public class PersonController {
 
 
 	@GetMapping
-	public List<Person> getAll() {
-		return service.getAll();
+	public ResponseEntity<?> getAll() {
+		return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getOne(@PathVariable String id) {
+	public ResponseEntity<?> getOne(@PathVariable final String id) {
 		Objects.requireNonNull(id, "id can not be null");
 
 		Person person = service.findById(id);
@@ -44,7 +44,7 @@ public class PersonController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> addNewPerson(@RequestBody Person person) {
+	public ResponseEntity<?> addNewPerson(@RequestBody final Person person) {
 		if (person == null) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
@@ -57,7 +57,7 @@ public class PersonController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updatePerson(@PathVariable Long id, @RequestBody Person person) {
+	public ResponseEntity<?> updatePerson(@PathVariable final String id, @RequestBody final Person person) {
 		if (person == null) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
@@ -70,7 +70,7 @@ public class PersonController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteOne(@PathVariable String id) {
+	public ResponseEntity<?> deleteOne(@PathVariable final String id) {
 		Objects.requireNonNull(id, "id can not be null");
 
 		Person deleted = service.delete(id);

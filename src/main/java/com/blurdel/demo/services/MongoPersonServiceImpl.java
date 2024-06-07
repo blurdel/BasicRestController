@@ -5,12 +5,10 @@ import java.util.List;
 
 import com.blurdel.demo.repositories.MongoPersonRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.blurdel.demo.model.Person;
 
-@Profile("mongo")
 @Service
 public class MongoPersonServiceImpl implements PersonService {
 
@@ -47,6 +45,16 @@ public class MongoPersonServiceImpl implements PersonService {
 			repo.delete(fetched);
 		}
 		return fetched;
+	}
+
+	@Override
+	public Long deleteAll() {
+		Long count = 0L;
+		for (Person p : getAll()) {
+			repo.delete(p);
+			++count;
+		}
+		return count;
 	}
 
 	@Override
