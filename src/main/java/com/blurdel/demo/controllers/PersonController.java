@@ -1,8 +1,6 @@
 package com.blurdel.demo.controllers;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +21,6 @@ import com.blurdel.demo.services.PersonService;
 @RequestMapping({"/", "/person"})
 public class PersonController {
 
-//	@Autowired
 	private final PersonService service;
 
 
