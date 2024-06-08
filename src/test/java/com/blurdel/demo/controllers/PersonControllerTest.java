@@ -133,7 +133,6 @@ class PersonControllerTest {
         // Update the values
         Person updated = new Person(added.getId(), "Zoey!", 15);
 
-//		ResultActions resultActions = mockMvc.perform(put("/person/{id}", updated.getId())
         mockMvc.perform(put("/person/{id}", updated.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -144,10 +143,6 @@ class PersonControllerTest {
                 .andExpect(jsonPath("$.id").value(updated.getId()))
                 .andExpect(jsonPath("$.name").value(updated.getName()))
                 .andExpect(jsonPath("$.age").value(updated.getAge()));
-
-//		MvcResult result = resultActions.andReturn();
-//		String body = result.getResponse().getContentAsString();
-//		Person response = objMapper.readValue(body, Person.class);
     }
 
     @Test

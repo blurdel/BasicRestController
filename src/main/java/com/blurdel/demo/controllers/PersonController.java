@@ -1,7 +1,7 @@
 package com.blurdel.demo.controllers;
 
-import java.util.Objects;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +22,8 @@ public class PersonController {
 
 	private final PersonService service;
 
+	private static final Logger LOG = LoggerFactory.getLogger(PersonController.class);
+
 
     public PersonController(PersonService service) {
         this.service = service;
@@ -30,13 +32,13 @@ public class PersonController {
 
     @GetMapping
 	public ResponseEntity<?> getAll() {
+		LOG.info("PersonController GET");
 		return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getOne(@PathVariable final String id) {
-		Objects.requireNonNull(id, "id can not be null");
-
+		LOG.info("PersonController GET with id {}", id);
 		Person person = service.findById(id);
 		if (person == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,10 +48,7 @@ public class PersonController {
 	
 	@PostMapping
 	public ResponseEntity<?> addNewPerson(@RequestBody final Person person) {
-		if (person == null) {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-		}
-		
+		LOG.info("PersonController POST with person {}", person);
 		Person saved = service.add(person);
 		if (saved == null) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -59,10 +58,7 @@ public class PersonController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updatePerson(@PathVariable final String id, @RequestBody final Person person) {
-		if (person == null) {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-		}
-		
+		LOG.info("PersonController PUT with id {}, person {}", id, person);
 		Person updated = service.update(new Person(String.valueOf(id), person.getName(), person.getAge()));
 		if (updated == null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -71,9 +67,8 @@ public class PersonController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteOne(@PathVariable final String id) {
-		Objects.requireNonNull(id, "id can not be null");
-
+	public ResponseEntity<?> deletePerson(@PathVariable final String id) {
+		LOG.info("PersonController DELETE with id {}", id);
 		Person deleted = service.delete(id);
 		if (deleted == null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

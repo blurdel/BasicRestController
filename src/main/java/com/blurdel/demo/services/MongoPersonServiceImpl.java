@@ -2,9 +2,9 @@ package com.blurdel.demo.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.blurdel.demo.repositories.MongoPersonRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blurdel.demo.model.Person;
@@ -12,11 +12,11 @@ import com.blurdel.demo.model.Person;
 @Service
 public class MongoPersonServiceImpl implements PersonService {
 
-	private MongoPersonRepo repo;
+	private final MongoPersonRepo repo;
 
 
-	public MongoPersonServiceImpl(MongoPersonRepo repo) {
-		this.repo = repo;
+	public MongoPersonServiceImpl(final MongoPersonRepo personRepo) {
+		this.repo = personRepo;
 	}
 
 	@Override
@@ -27,22 +27,26 @@ public class MongoPersonServiceImpl implements PersonService {
 	}
 
 	@Override
-	public Person findById(String id) {
+	public Person findById(final String id) {
+		Objects.requireNonNull(id, "id can not be null");
 		return repo.findById(id).orElse(null);
 	}
 
 	@Override
-	public Person add(Person person) {
+	public Person add(final Person person) {
+		Objects.requireNonNull(person, "person can not be null");
 		return repo.save(person);
 	}
 
 	@Override
-	public Person update(Person person) {
+	public Person update(final Person person) {
+		Objects.requireNonNull(person, "person can not be null");
 		return repo.save(person);
 	}
 
 	@Override
-	public Person delete(String id) {
+	public Person delete(final String id) {
+		Objects.requireNonNull(id, "id can not be null");
 		Person fetched = findById(id);
 		if (fetched != null) {
 			repo.delete(fetched);
@@ -61,7 +65,8 @@ public class MongoPersonServiceImpl implements PersonService {
 	}
 
 	@Override
-	public Person findByName(String name) {
+	public Person findByName(final String name) {
+		Objects.requireNonNull(name, "name can not be null");
 		return repo.findByName(name);
 	}
 

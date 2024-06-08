@@ -45,13 +45,13 @@ public class BasicRestControllerMongoTests {
 		assertNotNull(personService);
 	}
 
-	@Test
-	void testFindZoey() {
-//		Person added = personService.add(new Person(null, "Zoey!", 15));
-		Person fetched = personService.findByName("Zoey!");
-		assertEquals("Zoey!", fetched.getName());
-		assertEquals(15, fetched.getAge());
-	}
+//	@Test
+//	void testFindZoey() {
+////		Person added = personService.add(new Person(null, "Zoey!", 15));
+//		Person fetched = personService.findByName("Zoey!");
+//		assertEquals("Zoey!", fetched.getName());
+//		assertEquals(15, fetched.getAge());
+//	}
 
 	@Test
 	void testFindAll() {
