@@ -12,10 +12,13 @@ import com.blurdel.demo.model.Person;
 @Service
 public class MongoPersonServiceImpl implements PersonService {
 
-	@Autowired
 	private MongoPersonRepo repo;
 
-	
+
+	public MongoPersonServiceImpl(MongoPersonRepo repo) {
+		this.repo = repo;
+	}
+
 	@Override
 	public List<Person> getAll() {
 		ArrayList<Person > list = new ArrayList<>();
