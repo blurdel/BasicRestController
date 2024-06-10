@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.blurdel.demo.repositories.MongoPersonRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blurdel.demo.model.Person;
@@ -14,9 +15,9 @@ public class MongoPersonServiceImpl implements PersonService {
 
 	private final MongoPersonRepo repo;
 
-
-	public MongoPersonServiceImpl(final MongoPersonRepo personRepo) {
-		this.repo = personRepo;
+	@Autowired
+	public MongoPersonServiceImpl(final MongoPersonRepo pMongoPersonRepo) {
+		this.repo = pMongoPersonRepo;
 	}
 
 	@Override
