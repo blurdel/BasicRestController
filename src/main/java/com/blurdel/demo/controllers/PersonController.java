@@ -21,15 +21,16 @@ import com.blurdel.demo.services.PersonService;
 @RequestMapping({"/", "/person"})
 public class PersonController {
 
-	private final PersonService service;
+	@Autowired
+	private PersonService service;
 
 	private static final Logger LOG = LoggerFactory.getLogger(PersonController.class);
 
 
-	@Autowired
-    public PersonController(PersonService service) {
-        this.service = service;
-    }
+//	@Autowired
+//    public PersonController(PersonService service) {
+//        this.service = service;
+//    }
 
 
     @GetMapping
