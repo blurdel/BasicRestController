@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 import com.blurdel.demo.repositories.MongoPersonRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blurdel.demo.model.Person;
@@ -13,13 +12,12 @@ import com.blurdel.demo.model.Person;
 @Service
 public class MongoPersonServiceImpl implements PersonService {
 
-	@Autowired
 	private MongoPersonRepo repo;
 
 
-//	public MongoPersonServiceImpl(final MongoPersonRepo pMongoPersonRepo) {
-//		this.repo = pMongoPersonRepo;
-//	}
+	public MongoPersonServiceImpl(final MongoPersonRepo repo) {
+		this.repo = repo;
+	}
 
 	@Override
 	public List<Person> getAll() {
