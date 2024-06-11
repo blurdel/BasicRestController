@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/spring-mongo-test
+
+#spring.data.mongodb.uri=${MONGO_URL}
+
+logging.level:
+  org.springframework.web: DEBUG
+  org.hibernate: ERROR
