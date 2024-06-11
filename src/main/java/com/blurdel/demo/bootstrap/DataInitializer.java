@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataInitializer implements CommandLineRunner {
 
-    private PersonService personService;
+    private final PersonService personService;
 
 
     public DataInitializer(PersonService personService) {

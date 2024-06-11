@@ -20,7 +20,7 @@ import com.blurdel.demo.services.PersonService;
 @RequestMapping({"/", "/person"})
 public class PersonController {
 
-	private PersonService service;
+	private final PersonService service;
 
 	private static final Logger LOG = LoggerFactory.getLogger(PersonController.class);
 

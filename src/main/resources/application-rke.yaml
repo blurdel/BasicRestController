@@ -1,4 +1,0 @@
-spring:
-  data:
-    mongodb:
-      uri: mongodb://${USER_NAME}:${USER_PWD}@${DB_URL}/springmongo?authSource=admin

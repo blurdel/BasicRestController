@@ -12,7 +12,7 @@ import com.blurdel.demo.model.Person;
 @Service
 public class MongoPersonServiceImpl implements PersonService {
 
-	private MongoPersonRepo repo;
+	private final MongoPersonRepo repo;
 
 
 	public MongoPersonServiceImpl(final MongoPersonRepo repo) {
