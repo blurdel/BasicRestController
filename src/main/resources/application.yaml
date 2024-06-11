@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/spring-mongo-test
+      uri: mongodb://localhost:27017/springmongo
 
 #spring.data.mongodb.uri=${MONGO_URL}
 
