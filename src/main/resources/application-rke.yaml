@@ -1,4 +1,4 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://${USER_NAME}:${USER_PWD}@${DB_URL}/spring-mongo-test
+      uri: mongodb://${USER_NAME}:${USER_PWD}@${DB_URL}/spring-mongo-test?authSource=admin&retryWrites=true&w=majority
