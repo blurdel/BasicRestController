@@ -1,8 +1,9 @@
 package com.blurdel.demo.controllers;
 
-import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,52 +22,66 @@ import com.blurdel.demo.services.PersonService;
 @RequestMapping({"/", "/person"})
 public class PersonController {
 
-	@Autowired
-	private PersonService service;
+	private final PersonService service;
 
+	private static final Logger LOG = LoggerFactory.getLogger(PersonController.class);
+
+
+	public PersonController(PersonService service) {
+		this.service = service;
+	}
 
 	@GetMapping
-	public List<Person> getAll() {
-		return service.getAll();
+	public ResponseEntity<?> getAll() {
+		LOG.info("PersonController returning list");
+		return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getOne(@PathVariable Long id) {
-		Person person = service.getById(id);
-		if (person == null) {
+	public ResponseEntity<?> getOne(@PathVariable final Long id) {
+		LOG.info("PersonController GET called for id: {}", id);
+		Optional<Person> person = service.getById(id);
+		if (person.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		LOG.debug("PersonController GET Response: {}", person.get().toString());
 		return new ResponseEntity<>(person, HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<?> addNewPerson(@RequestBody Person person) {
-		Person saved = service.add(person);
-		if (saved == null) {
+	public ResponseEntity<?> addNewPerson(@RequestBody final Person payload) {
+		LOG.info("PersonController POST called with payload: {}", payload.toString());
+		Optional<Person> saved = service.add(payload);
+		if (saved.isEmpty()) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		LOG.debug("PersonController POST Response: {}", saved.get().toString());
 		return new ResponseEntity<>(saved, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updatePerson(@PathVariable Long id, @RequestBody Person person) {
-		if (!id.equals(person.getId())) {
+	public ResponseEntity<?> updatePerson(@PathVariable final Long id, @RequestBody final Person payload) {
+		LOG.info("PersonController PUT called for id {} with payload {}", id, payload.toString());
+		if (!id.equals(payload.getId())) {
 			throw new IllegalArgumentException("PUT Request pathParam.id should match person.id");
 		}
 
-		Person updated = service.update(person);
-		if (updated == null) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		Optional<Person> updated = service.update(payload);
+		if (updated.isEmpty()) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
+		LOG.debug("PersonController PUT Response: {}", updated.get().toString());
 		return new ResponseEntity<>(updated, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteOne(@PathVariable Long id) {
-		Person deleted = service.delete(id);
-		if (deleted == null) {
+	public ResponseEntity<?> deleteOne(@PathVariable final Long id) {
+		LOG.info("PersonController DELETE called for id {}", id);
+		Optional<Person> deleted = service.delete(id);
+		if (deleted.isEmpty()) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
+		LOG.debug("PersonController DELETE Response: {}", deleted.get().toString());
 		return new ResponseEntity<>(deleted, HttpStatus.OK);
 	}
 	

@@ -8,13 +8,13 @@ import com.blurdel.demo.model.Person;
 public interface PersonService {
 	
 	List<Person> getAll();
-	
-	Person getById(Long id);
-			
-	Person add(Person person);
-	
-	Person update(Person person);
-	
-	Person delete(Long id);
+
+	Optional<Person> getById(Long id);
+
+	Optional<Person> add(Person person);
+
+	Optional<Person> update(Person person);
+
+	Optional<Person> delete(Long id);
 
 }

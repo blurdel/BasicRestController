@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -97,16 +99,16 @@ class PersonControllerTest {
 	@Test
 	void testRestGetOne() throws Exception {
 		// Insert an entity to GET
-		Person added = service.add(SAMPLE);
+		Optional<Person> added = service.add(SAMPLE);
 
-		mockMvc.perform(get("/person/{id}", added.getId())
+		mockMvc.perform(get("/person/{id}", added.get().getId())
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)
 				)
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.id").value(added.getId()))
-				.andExpect(jsonPath("$.name").value(added.getName()))
-				.andExpect(jsonPath("$.age").value(added.getAge()));
+				.andExpect(jsonPath("$.id").value(added.get().getId()))
+				.andExpect(jsonPath("$.name").value(added.get().getName()))
+				.andExpect(jsonPath("$.age").value(added.get().getAge()));
 	}
 
 	@Test
@@ -128,10 +130,10 @@ class PersonControllerTest {
 	@Test
 	void testRestUpdateOne() throws Exception {
 		// Insert an entity to UPDATE
-		Person added = service.add(new Person(null, "Fred", 42));
+		Optional<Person> added = service.add(new Person(null, "Fred", 42));
 
 		// Update the values
-		Person updated = new Person(added.getId(), "Zoey!", 15);
+		Person updated = new Person(added.get().getId(), "Zoey!", 15);
 
 //		ResultActions resultActions = mockMvc.perform(put("/person/{id}", updated.getId())
 		mockMvc.perform(put("/person/{id}", updated.getId())
@@ -153,9 +155,9 @@ class PersonControllerTest {
 	@Test
 	void testRestDeleteOne() throws Exception {
 		// Insert an entity to DELETE
-		Person added = service.add(SAMPLE);
+		Optional<Person> added = service.add(SAMPLE);
 
-		mockMvc.perform(delete("/person/{id}", added.getId()))
+		mockMvc.perform(delete("/person/{id}", added.get().getId()))
 				.andDo(print())
 				.andExpect(status().isOk());
 	}
