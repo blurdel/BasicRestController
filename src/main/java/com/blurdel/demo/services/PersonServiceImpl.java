@@ -25,7 +25,7 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	@Override
-	public Optional<Person> getById(final Long id) {
+	public Optional<Person> findById(final Long id) {
 		Objects.requireNonNull(id, "id can not be null");
 		return personRepo.findById(id);
 	}
@@ -52,11 +52,27 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	public Optional<Person> delete(final Long id) {
 		Objects.requireNonNull(id, "id can not be null");
-		Optional<Person> person = getById(id);
+		Optional<Person> person = findById(id);
 		if (person.isPresent()) {
 			personRepo.deleteById(person.get().getId());
 		}
 		return person;
+	}
+
+	@Override
+	public Long deleteAll() {
+		Long count = 0L;
+		for (Person p : getAll()) {
+			personRepo.delete(p);
+			++count;
+		}
+		return count;
+	}
+
+	@Override
+	public Person findByName(String name) {
+		Objects.requireNonNull(name, "name can not be null");
+		return personRepo.findByName(name);
 	}
 
 }

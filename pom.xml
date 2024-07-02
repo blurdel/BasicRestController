@@ -11,7 +11,7 @@
 	
 	<groupId>com.blurdel</groupId>
 	<artifactId>BasicRestController</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>BasicRestController</name>
 	<description>Demo project for Spring Boot</description>
 	

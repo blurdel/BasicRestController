@@ -40,7 +40,7 @@ public class PersonController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getOne(@PathVariable final Long id) {
 		LOG.info("PersonController GET called for id: {}", id);
-		Optional<Person> person = service.getById(id);
+		Optional<Person> person = service.findById(id);
 		if (person.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

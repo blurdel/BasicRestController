@@ -3,7 +3,7 @@ FROM openjdk:17-jdk-slim as builder
 WORKDIR application
 
 # Set application jar-filename
-ARG JAR_FILE=target/BasicRestController-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=target/BasicRestController-0.0.2-SNAPSHOT.jar
 
 COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=layertools -jar application.jar extract

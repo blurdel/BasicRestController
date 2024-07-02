@@ -6,4 +6,6 @@ import com.blurdel.demo.model.Person;
 
 public interface PersonRepo extends JpaRepository <Person, Long> {
 
+    Person findByName(String name);
+
 }
