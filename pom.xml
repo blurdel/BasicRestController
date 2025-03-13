@@ -10,10 +10,10 @@
 	</parent>
 	
 	<groupId>com.blurdel</groupId>
-	<artifactId>BasicRestController</artifactId>
+	<artifactId>basic-rest-controller</artifactId>
 	<version>1.0.3</version>
 	<name>BasicRestController</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Basic Rest Controller with database</description>
 	
 	<properties>
 		<java.version>17</java.version>

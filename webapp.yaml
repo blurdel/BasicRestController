@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: person-webapp
-        image: localhost:5000/BasicRestController:1.0.3
+        image: localhost:5000/basic-rest-controller:1.0.3
         ports:
         - containerPort: 8080
           name: app
