@@ -18,8 +18,6 @@ spec:
       - name: mysql
         image: mysql:8.0
         args: ["--default-authentication-plugin=mysql_native_password"]
-        ports:
-        - containerPort: 3306
         env:
         - name: MYSQL_DATABASE
           value: SPRING
@@ -38,13 +36,16 @@ spec:
             secretKeyRef:
               name: mysql-secret
               key: root-password
+        ports:
+        - containerPort: 3306
+          name: mysql
         volumeMounts:
-        - name: mysql-storage
+        - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
       volumes:
-      - name: mysql-storage
-        persistantVolumeClaim:
-          claimType: mysql-pv-claim
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
 ---
 apiVersion: v1
 kind: Service
