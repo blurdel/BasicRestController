@@ -14,7 +14,7 @@ public class HealthController {
 
     @GetMapping
     public ResponseEntity<?> getHealth() {
-        log.debug("/health");
+        log.trace("/health");
         return new ResponseEntity<>("Ok :-)", HttpStatus.OK);
     }
 

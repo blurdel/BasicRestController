@@ -34,7 +34,7 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	public Person update(Person person) {
 		Optional<Person> opt = personRepo.findById(person.getId());
-		if (!opt.isPresent()) {
+		if (opt.isEmpty()) {
 			return null;
 		}
 		Person updated = opt.get(); // retain original id value
