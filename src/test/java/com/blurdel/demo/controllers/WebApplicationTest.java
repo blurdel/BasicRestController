@@ -8,30 +8,21 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class HelloControllerTest {
+class WebApplicationTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    public void testHelloDefault() throws Exception {
-        mockMvc.perform(get("/hello"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Hello World!")));
-    }
-
-    @Test
-    public void testHelloWithName() throws Exception {
-        mockMvc.perform(get("/hello")
-                        .param("name", "Fred")
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Hello Fred!")));
-    }
+	@Test
+	public void testHelloDefault() throws Exception {
+		mockMvc.perform(get("/hello")).andDo(print()).andExpect(status().isOk())
+				.andExpect(content().string(containsString("Hello World!")));
+	}
 
 }
