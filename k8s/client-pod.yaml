@@ -7,5 +7,5 @@ metadata:
 spec:
   containers:
   - name: mysql-client
-    image: ellerbrock/alpine-mysql-client
+    image: mysql:8.0
     command: ["sleep", "1000"]

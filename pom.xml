@@ -5,15 +5,15 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.6</version>
+		<version>3.4.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	
 	<groupId>com.blurdel</groupId>
-	<artifactId>BasicRestController</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<artifactId>basic-rest-controller</artifactId>
+	<version>1.0.3</version>
 	<name>BasicRestController</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Basic Rest Controller with database</description>
 	
 	<properties>
 		<java.version>17</java.version>
@@ -28,12 +28,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
