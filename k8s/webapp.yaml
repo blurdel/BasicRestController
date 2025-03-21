@@ -16,9 +16,12 @@ spec:
     spec:
       containers:
       - name: person-webapp
-        image: localhost:5000/basic-rest-controller:1.0.2
+        image: localhost:5000/basic-rest-controller:1.0.3
         ports:
         - containerPort: 8080
+          name: app
+        - containerPort: 5005
+          name: debug
         env:
         - name: USER_NAME
           valueFrom:
@@ -37,6 +40,12 @@ spec:
               key: mysql-url
         - name: SPRING_PROFILES_ACTIVE
           value: rke
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 15
 ---
 apiVersion: v1
 kind: Service
@@ -47,7 +56,8 @@ spec:
   selector:
     app: person-webapp
   ports:
-    - protocol: TCP
+    - name: app-port
       port: 8080
-      targetPort: 8080
       nodePort: 30100
+    - name: debug-port
+      port: 5005
