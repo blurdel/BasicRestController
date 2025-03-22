@@ -40,7 +40,7 @@ public class PersonServiceImpl implements PersonService {
 	public Optional<Person> update(final Person person) {
 		Objects.requireNonNull(person, "person can not be null");
 		Optional<Person> opt = personRepo.findById(person.getId());
-		if (!opt.isPresent()) {
+		if (opt.isEmpty()) {
 			return Optional.empty();
 		}
 		Person updated = opt.get(); // retain original id value
@@ -53,9 +53,7 @@ public class PersonServiceImpl implements PersonService {
 	public Optional<Person> delete(final Long id) {
 		Objects.requireNonNull(id, "id can not be null");
 		Optional<Person> person = findById(id);
-		if (person.isPresent()) {
-			personRepo.deleteById(person.get().getId());
-		}
+        person.ifPresent(p -> personRepo.deleteById(p.getId()));
 		return person;
 	}
 

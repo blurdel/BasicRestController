@@ -38,13 +38,13 @@ public class PersonController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getOne(@PathVariable final Long id) {
+	public ResponseEntity<?> getPerson(@PathVariable final Long id) {
 		LOG.info("PersonController GET called for id: {}", id);
 		Optional<Person> person = service.findById(id);
 		if (person.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		LOG.debug("PersonController GET Response: {}", person.get().toString());
+		LOG.debug("PersonController GET Response: {}", person.get());
 		return new ResponseEntity<>(person, HttpStatus.OK);
 	}
 
@@ -55,7 +55,7 @@ public class PersonController {
 		if (saved.isEmpty()) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		LOG.debug("PersonController POST Response: {}", saved.get().toString());
+		LOG.debug("PersonController POST Response: {}", saved.get());
 		return new ResponseEntity<>(saved, HttpStatus.CREATED);
 	}
 
@@ -70,18 +70,18 @@ public class PersonController {
 		if (updated.isEmpty()) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
-		LOG.debug("PersonController PUT Response: {}", updated.get().toString());
+		LOG.debug("PersonController PUT Response: {}", updated.get());
 		return new ResponseEntity<>(updated, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteOne(@PathVariable final Long id) {
+	public ResponseEntity<?> deletePerson(@PathVariable final Long id) {
 		LOG.info("PersonController DELETE called for id {}", id);
 		Optional<Person> deleted = service.delete(id);
 		if (deleted.isEmpty()) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
-		LOG.debug("PersonController DELETE Response: {}", deleted.get().toString());
+		LOG.debug("PersonController DELETE Response: {}", deleted.get());
 		return new ResponseEntity<>(deleted, HttpStatus.OK);
 	}
 	
