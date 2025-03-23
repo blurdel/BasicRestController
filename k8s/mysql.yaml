@@ -26,8 +26,8 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:8.0
-        args: ["--default-authentication-plugin=mysql_native_password"]
+        image: mysql:8.4.0
+        # args: ["--default-authentication-plugin=mysql_native_password"]
         env:
         - name: MYSQL_DATABASE
           value: SPRING
@@ -49,13 +49,13 @@ spec:
         ports:
         - containerPort: 3306
           name: mysql
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        # resources:
+        #   requests:
+        #     memory: "128Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "256Mi"
+        #     cpu: "500m"
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql

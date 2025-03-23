@@ -46,14 +46,14 @@ spec:
           httpGet:
             path: /health
             port: 8080
-          initialDelaySeconds: 15
+          initialDelaySeconds: 30
           periodSeconds: 15
         resources:
           requests:
-            memory: "64Mi"
+            memory: "128Mi"
             cpu: "250m"
           limits:
-            memory: "128Mi"
+            memory: "256Mi"
             cpu: "500m"
 ---
 apiVersion: v1
