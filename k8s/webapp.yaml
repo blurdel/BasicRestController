@@ -23,21 +23,23 @@ spec:
         - containerPort: 5005
           name: debug
         env:
-        - name: USER_NAME
+        - name: SPRING_DATASOURCE_USERNAME
           valueFrom:
             secretKeyRef:
               name: mysql-secret
               key: mysql-user
-        - name: USER_PWD
+        - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mysql-secret
               key: mysql-password
-        - name: DB_URL
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-config
-              key: mysql-url
+#        - name: SPRING_DATASOURCE_URL
+#          valueFrom:
+#            configMapKeyRef:
+#              name: mysql-config
+#              key: mysql-url
+        - name: SPRING_JPA_HIBERNATE_DDLAUTO
+          value: validate
         - name: SPRING_PROFILES_ACTIVE
           value: rke
         livenessProbe:
