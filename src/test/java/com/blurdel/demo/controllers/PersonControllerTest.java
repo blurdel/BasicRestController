@@ -18,6 +18,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,7 +40,7 @@ class PersonControllerTest {
 	@Autowired
 	private PersonService service;
 
-	private static final Person SAMPLE = new Person(null, "Zoey!", 15);
+
 
 //	@BeforeEach
 //	void setup(WebApplicationContext wac) {
@@ -64,21 +65,26 @@ class PersonControllerTest {
 
 	@Test
 	void testRestPost() throws Exception {
+		Person person = new Person("Zoey!", 15);
+
 		mockMvc.perform(post("/person")
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)
-						.content(objMapper.writeValueAsString(SAMPLE))
+						.content(objMapper.writeValueAsString(person))
 				)
 				.andExpect(status().isCreated())
 //				.andExpect(jsonPath("$.id").value(1))
-				.andExpect(jsonPath("$.name").value(SAMPLE.getName()))
-				.andExpect(jsonPath("$.age").value(SAMPLE.getAge()));
+				.andExpect(jsonPath("$.name").value(person.getName()))
+				.andExpect(jsonPath("$.age").value(person.getAge()));
 	}
 
 	@Test
 	void testRestGetAll() throws Exception {
 		// Insert an entity to GET
-		service.add(SAMPLE);
+		Optional<Person> added = service.add(new Person("Tana", 11));
+		if (added.isEmpty()) {
+			fail("added.isEmpty()");
+		}
 
 		mockMvc.perform(get("/person")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -86,8 +92,9 @@ class PersonControllerTest {
 				)
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", hasSize(1)))
-				.andExpect(jsonPath("$[0].name").value(SAMPLE.getName()))
-				.andExpect(jsonPath("$[0].age").value(SAMPLE.getAge()));
+				.andExpect(jsonPath("$[0].id").value(added.get().getId()))
+				.andExpect(jsonPath("$[0].name").value(added.get().getName()))
+				.andExpect(jsonPath("$[0].age").value(added.get().getAge()));
 	}
 
 	@Test
@@ -99,7 +106,10 @@ class PersonControllerTest {
 	@Test
 	void testRestGetOne() throws Exception {
 		// Insert an entity to GET
-		Optional<Person> added = service.add(SAMPLE);
+		Optional<Person> added = service.add(new Person("Cami", 13));
+		if (added.isEmpty()) {
+			fail("added.isEmpty()");
+		}
 
 		mockMvc.perform(get("/person/{id}", added.get().getId())
 						.contentType(MediaType.APPLICATION_JSON)
@@ -130,22 +140,26 @@ class PersonControllerTest {
 	@Test
 	void testRestUpdateOne() throws Exception {
 		// Insert an entity to UPDATE
-		Optional<Person> added = service.add(new Person(null, "Fred", 42));
+		Optional<Person> person = service.add(new Person("Fred", 42));
+		if (person.isEmpty()) {
+			fail("person.isEmpty()");
+		}
 
 		// Update the values
-		Person updated = new Person(added.get().getId(), "Zoey!", 15);
+		person.get().setName("blurdel");
+		person.get().setAge(115);
 
 //		ResultActions resultActions = mockMvc.perform(put("/person/{id}", updated.getId())
-		mockMvc.perform(put("/person/{id}", updated.getId())
+		mockMvc.perform(put("/person/{id}", person.get().getId())
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)
-						.content(objMapper.writeValueAsString(updated))
+						.content(objMapper.writeValueAsString(person))
 				)
 //				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.id").value(updated.getId()))
-				.andExpect(jsonPath("$.name").value(updated.getName()))
-				.andExpect(jsonPath("$.age").value(updated.getAge()));
+				.andExpect(jsonPath("$.id").value(person.get().getId()))
+				.andExpect(jsonPath("$.name").value(person.get().getName()))
+				.andExpect(jsonPath("$.age").value(person.get().getAge()));
 
 //		MvcResult result = resultActions.andReturn();
 //		String body = result.getResponse().getContentAsString();
@@ -155,7 +169,10 @@ class PersonControllerTest {
 	@Test
 	void testRestDeleteOne() throws Exception {
 		// Insert an entity to DELETE
-		Optional<Person> added = service.add(SAMPLE);
+		Optional<Person> added = service.add(new Person("Scooter", 10));
+		if (added.isEmpty()) {
+			fail("added.isEmpty()");
+		}
 
 		mockMvc.perform(delete("/person/{id}", added.get().getId()))
 				.andDo(print())
