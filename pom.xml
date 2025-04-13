@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.6</version>
+		<version>3.4.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	
 	<groupId>com.blurdel</groupId>
-	<artifactId>BasicRestController</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<artifactId>basic-rest-controller</artifactId>
+	<version>1.0.2</version>
 	<name>BasicRestController</name>
 	<description>Demo project for Spring Boot</description>
 	
@@ -34,6 +34,7 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

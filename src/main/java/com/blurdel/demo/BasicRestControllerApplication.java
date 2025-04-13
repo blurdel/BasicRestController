@@ -25,9 +25,9 @@ public class BasicRestControllerApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		logger.info("JAVA_HOME: {}", env.getProperty("JAVA_HOME"));
 
-		logger.info("USER_NAME: {}", env.getProperty("USER_NAME"));
-		logger.info("USER_PWD: {}", env.getProperty("USER_PWD"));
-		logger.info("DB_URL: {}", env.getProperty("DB_URL"));
+		logger.info("SPRING_DATASOURCE_USERNAME: {}", env.getProperty("SPRING_DATASOURCE_USERNAME"));
+
+		logger.info("SPRING_JPA_HIBERNATE_DDLAUTO: {}", env.getProperty("SPRING_JPA_HIBERNATE_DDLAUTO"));
 
 		logger.info("SPRING_PROFILES_ACTIVE: {}", env.getProperty("SPRING_PROFILES_ACTIVE"));
 	}
