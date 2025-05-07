@@ -9,4 +9,4 @@ fi
 
 source "${PROP_FILE}"
 
-docker build --no-cache . -t "${REGISTRY}"/"${APP_NAME}":"${APP_VERSION}" -f docker/Dockerfile
+docker build -t "${REGISTRY}"/"${APP_NAME}":"${APP_VERSION}" . -f docker/Dockerfile
