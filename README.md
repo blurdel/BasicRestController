@@ -5,6 +5,7 @@ Basic Spring Boot REST controller example with a MySQL database
 * Jenkinsfile
 * Dockerfile
 * k8s deployment
+* helm charts
 
 ### Docker commands
     # Build the image
@@ -14,4 +15,7 @@ Basic Spring Boot REST controller example with a MySQL database
     docker run --rm -d --name basic-rest-controller -p 8080:8080 basic-rest-controller:1.0.0
 
 ### k8s deployment
-    kubectl apply -k ./
+    kubectl apply -k ./k8s
+
+### helm chart
+    helm install <release> ./charts
