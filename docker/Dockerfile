@@ -1,9 +1,11 @@
 FROM openjdk:17-jdk-slim AS builder
 
-WORKDIR /application
-
 # Set application jar-filename
-ARG JAR_FILE=target/basic-rest-controller-1.0.3.jar
+ARG APP_VERSION=0.0.0
+
+ARG JAR_FILE=target/basic-rest-controller-${APP_VERSION}.jar
+
+WORKDIR /application
 
 COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=layertools -jar application.jar extract

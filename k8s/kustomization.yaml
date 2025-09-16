@@ -4,4 +4,4 @@ resources:
   - mysql-pv.yaml
   - mysql.yaml
   - webapp.yaml
-  - client-pod.yaml
+#  - client-pod.yaml
