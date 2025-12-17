@@ -39,7 +39,7 @@ spec:
 #              name: mysql-config
 #              key: mysql-url
         - name: SPRING_JPA_HIBERNATE_DDLAUTO
-          value: validate
+          value: update
         - name: SPRING_PROFILES_ACTIVE
           value: rke
         livenessProbe:
