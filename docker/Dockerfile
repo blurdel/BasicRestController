@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk-slim AS builder
+FROM maven:3.9.6-eclipse-temurin-21-jammy AS builder
 
 # Set application jar-filename
 ARG APP_VERSION=0.0.0
@@ -11,7 +11,7 @@ COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
 
-FROM eclipse-temurin:21-jdk-slim
+FROM maven:3.9.6-eclipse-temurin-21-jammy
 
 EXPOSE 8888
 

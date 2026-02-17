@@ -2,6 +2,7 @@
 global:
   appPort: &appPort 8888
   mysqlPort: &mysqlPort 3306
+  debugPort: 5005
 
 replicas: 1
 image:
@@ -14,19 +15,19 @@ ingress:
   host: basic-rest-controller.local
 
 service:
-  type: ClusterIP
+  type: NodePort #ClusterIP
   port: *appPort
   targetPort: *appPort
 
 livenessProbe:
-  httpget:
+  httpGet:
     path: /healthz
     port: *appPort
   initialDelaySeconds: 30
   periodSeconds: 20
   failureThreshold: 7
 readinessProbe:
-  httpget:
+  httpGet:
     path: /healthz
     port: *appPort
   initialDelaySeconds: 30
@@ -42,7 +43,7 @@ mysql:
     tag: ""
   serviceUrl: mysql-service
   rootPassword: c2VjcmV0
-  database: PEOPLE
+  database: SPRING
   user: dG11c2Vy
   password: dG11c2Vy
 

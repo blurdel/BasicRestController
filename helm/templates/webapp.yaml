@@ -20,7 +20,7 @@ spec:
         ports:
         - containerPort: {{ .Values.global.appPort }}
           name: app
-        - containerPort: 5005
+        - containerPort: {{ .Values.global.debugPort }}
           name: debug
         env:
         - name: SPRING_DATASOURCE_USERNAME
@@ -33,13 +33,8 @@ spec:
             secretKeyRef:
               name: mysql-secret
               key: mysql-password
-#        - name: SPRING_DATASOURCE_URL
-#          valueFrom:
-#            configMapKeyRef:
-#              name: mysql-config
-#              key: mysql-url
         - name: SPRING_JPA_HIBERNATE_DDLAUTO
-          value: validate
+          value: update
         - name: SPRING_JPA_PROPERTIES_HIBERNATE_SHOW_SQL
           value: "false"
         - name: SPRING_PROFILES_ACTIVE
@@ -65,7 +60,7 @@ kind: Service
 metadata:
   name: {{ .Chart.Name }}-{{ .Release.Name }}-service
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   selector:
     app: {{ .Chart.Name }}-{{ .Release.Name }}
   ports:
@@ -73,4 +68,4 @@ spec:
       port: {{ .Values.global.appPort }}
       nodePort: 30100
     - name: debug-port
-      port: 5005
+      port: {{ .Values.global.debugPort }}
