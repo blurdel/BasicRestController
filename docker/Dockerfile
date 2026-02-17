@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-slim AS builder
+FROM eclipse-temurin:21-jdk-slim AS builder
 
 # Set application jar-filename
 ARG APP_VERSION=0.0.0
@@ -11,9 +11,9 @@ COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
 
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:21-jdk-slim
 
-EXPOSE 8080
+EXPOSE 8888
 
 WORKDIR /application
 

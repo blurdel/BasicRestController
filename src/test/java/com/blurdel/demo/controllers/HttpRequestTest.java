@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HttpRequestTest {
@@ -19,7 +20,9 @@ public class HttpRequestTest {
 
     @Test
     public void testHelloDefault() throws Exception {
-        assertThat(restTemplate.getForObject("http://localhost:" + port + "/hello", String.class)).contains("Hello World!");
+        String body = restTemplate.getForObject("http://localhost:" + port + "/hello", String.class);
+        assertThat(body).contains("Hello World!");
+        assertEquals("Hello World!", body);
     }
 
 }

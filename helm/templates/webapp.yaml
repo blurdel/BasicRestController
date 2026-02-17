@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-{{ .Release.Name }}-deployment
+  labels:
+    app: {{ .Chart.Name }}-{{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-{{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-{{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}-{{ .Release.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: {{ .Values.global.appPort }}
+          name: app
+        - containerPort: 5005
+          name: debug
+        env:
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-user
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-password
+#        - name: SPRING_DATASOURCE_URL
+#          valueFrom:
+#            configMapKeyRef:
+#              name: mysql-config
+#              key: mysql-url
+        - name: SPRING_JPA_HIBERNATE_DDLAUTO
+          value: validate
+        - name: SPRING_JPA_PROPERTIES_HIBERNATE_SHOW_SQL
+          value: "false"
+        - name: SPRING_PROFILES_ACTIVE
+          value: rke
+        {{- with .Values.livenessProbe }}
+        livenessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.readinessProbe }}
+        readinessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-{{ .Release.Name }}-service
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Chart.Name }}-{{ .Release.Name }}
+  ports:
+    - name: app-port
+      port: {{ .Values.global.appPort }}
+      nodePort: 30100
+    - name: debug-port
+      port: 5005
