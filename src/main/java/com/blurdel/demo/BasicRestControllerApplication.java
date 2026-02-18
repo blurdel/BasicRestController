@@ -23,6 +23,8 @@ public class BasicRestControllerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+
+		logger.info("Some Environment Variables:");
 		logger.info("JAVA_HOME: {}", env.getProperty("JAVA_HOME"));
 
 		logger.info("SPRING_DATASOURCE_USERNAME: {}", env.getProperty("SPRING_DATASOURCE_USERNAME"));
