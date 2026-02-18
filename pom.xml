@@ -11,7 +11,7 @@
 	
 	<groupId>com.blurdel</groupId>
 	<artifactId>basic-rest-controller</artifactId>
-	<version>1.0.4-beta1</version>
+	<version>1.0.4-beta3</version>
 	<name>BasicRestController</name>
 	<description>Basic Rest Controller with database</description>
 	

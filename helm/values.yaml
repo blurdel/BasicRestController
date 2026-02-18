@@ -2,36 +2,35 @@
 global:
   appPort: &appPort 8888
   mysqlPort: &mysqlPort 3306
-  debugPort: 5005
 
 replicas: 1
 image:
   repository: localhost:5000/basic-rest-controller
+  version: 1.0.4-beta3
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
 
 ingress:
   host: basic-rest-controller.local
 
 service:
-  type: NodePort #ClusterIP
+  type: ClusterIP
   port: *appPort
   targetPort: *appPort
+  debugPort: 5005
 
 livenessProbe:
   httpGet:
-    path: /healthz
+    path: /health
     port: *appPort
-  initialDelaySeconds: 30
-  periodSeconds: 20
+  initialDelaySeconds: 5
+  periodSeconds: 5
   failureThreshold: 7
 readinessProbe:
   httpGet:
-    path: /healthz
+    path: /health
     port: *appPort
-  initialDelaySeconds: 30
-  periodSeconds: 20
+  initialDelaySeconds: 5
+  periodSeconds: 5
   failureThreshold: 7
 
 # MySQL Deployment

@@ -15,12 +15,12 @@ spec:
         app: {{ .Chart.Name }}-{{ .Release.Name }}
     spec:
       containers:
-      - name: {{ .Chart.Name }}-{{ .Release.Name }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
         ports:
-        - containerPort: {{ .Values.global.appPort }}
-          name: app
-        - containerPort: {{ .Values.global.debugPort }}
+        - containerPort: {{ .Values.service.port }}
+          name: http
+        - containerPort: {{ .Values.service.debugPort }}
           name: debug
         env:
         - name: SPRING_DATASOURCE_USERNAME
@@ -58,14 +58,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Chart.Name }}-{{ .Release.Name }}-service
+  name: {{ .Chart.Name }}-{{ .Release.Name }}
+  labels:
+    app: {{ .Chart.Name }}-{{ .Release.Name }}
 spec:
   type: {{ .Values.service.type }}
   selector:
     app: {{ .Chart.Name }}-{{ .Release.Name }}
   ports:
-    - name: app-port
-      port: {{ .Values.global.appPort }}
-      nodePort: 30100
+    - name: http
+      port: {{ .Values.service.port }}
+      # nodePort: 30100
     - name: debug-port
-      port: {{ .Values.global.debugPort }}
+      port: {{ .Values.service.debugPort }}
