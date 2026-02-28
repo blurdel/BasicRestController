@@ -19,5 +19,5 @@ docker run -d --rm \
 #     -e USER_PWD='tmuser' \
 #     --rm -it \
 #     --name "${APP_NAME}" \
-#     -p 8080:8080 \
+#     -p 8888:8888 \
 #     "${APP_NAME}":"${APP_VERSION}"

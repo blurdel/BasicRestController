@@ -18,7 +18,7 @@ spec:
       - name: person-webapp
         image: localhost:5000/basic-rest-controller:1.0.3
         ports:
-        - containerPort: 8080
+        - containerPort: 8888
           name: app
         - containerPort: 5005
           name: debug
@@ -46,8 +46,8 @@ spec:
           value: rke
         livenessProbe:
           httpGet:
-            path: /healthz
-            port: 8080
+            path: /health
+            port: 8888
           initialDelaySeconds: 30
           periodSeconds: 30
         resources:
@@ -68,7 +68,7 @@ spec:
     app: person-webapp
   ports:
     - name: app-port
-      port: 8080
+      port: 8888
       nodePort: 30100
     - name: debug-port
       port: 5005
