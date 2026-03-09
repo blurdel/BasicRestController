@@ -19,19 +19,35 @@ service:
   debugPort: 5005
 
 livenessProbe:
+  enabled: true
   httpGet:
     path: /health
     port: *appPort
-  initialDelaySeconds: 5
-  periodSeconds: 5
-  failureThreshold: 7
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
 readinessProbe:
+  enabled: true
   httpGet:
     path: /health
     port: *appPort
-  initialDelaySeconds: 5
+  initialDelaySeconds: 10
   periodSeconds: 5
-  failureThreshold: 7
+  timeoutSeconds: 3
+  failureThreshold: 2
+  successThreshold: 1
+startupProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: *appPort
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 1
+  successThreshold: 1
 
 # MySQL Deployment
 mysql:

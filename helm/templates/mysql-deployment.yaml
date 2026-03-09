@@ -56,6 +56,10 @@ spec:
         readinessProbe:
           {{- toYaml . | nindent 10 }}
         {{- end }}
+        {{- with .Values.mysql.startupProbe }}
+        startupProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         {{- with .Values.mysql.resources }}
         resources:
           {{- toYaml . | nindent 10 }}
