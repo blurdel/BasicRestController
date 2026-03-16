@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-mysql8-volume
+  name: pv-{{ .Chart.Name }}-volume
   labels:
     type: local
 spec:
@@ -11,14 +11,14 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/data/mysql8"
+    path: "/mnt/data/mysql8-{{ .Chart.Name }}"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-mysql8
+  name: pvc-{{ .Chart.Name }}
 spec:
-  volumeName: pv-mysql8-volume # Force bind to this PV by name
+  volumeName: pv-{{ .Chart.Name }}-volume # Force bind to this PV by name
   storageClassName: manual
   accessModes:
     - ReadWriteOnce

@@ -1,19 +1,19 @@
-FROM openjdk:17-jdk-slim AS builder
-
-ARG APP_VERSION=0.0.0
-
-WORKDIR /application
+FROM maven:3.9.6-eclipse-temurin-21-jammy AS builder
 
 # Set application jar-filename
+ARG APP_VERSION=0.0.0
+
 ARG JAR_FILE=target/basic-rest-controller-${APP_VERSION}.jar
+
+WORKDIR /application
 
 COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
 
-FROM openjdk:17-jdk-slim
+FROM maven:3.9.6-eclipse-temurin-21-jammy
 
-EXPOSE 8080
+EXPOSE 8888
 
 WORKDIR /application
 

@@ -1,0 +1,103 @@
+# Default values for mysql8
+global:
+  appPort: &appPort 8888
+  mysqlPort: &mysqlPort 3306
+
+replicas: 1
+image:
+  repository: localhost:5000/basic-rest-controller
+  version: 1.0.4
+  pullPolicy: IfNotPresent
+
+ingress:
+  host: basic-rest-controller.local
+
+service:
+  type: ClusterIP
+  port: *appPort
+  targetPort: *appPort
+  debugPort: 5005
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: *appPort
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: *appPort
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 2
+  successThreshold: 1
+startupProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: *appPort
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 1
+  successThreshold: 1
+
+# MySQL Deployment
+mysql:
+  image:
+    repository: mysql
+    version: 8.4.0
+    pullPolicy: IfNotPresent
+    tag: ""
+  serviceUrl: mysql-service
+  rootPassword: c2VjcmV0
+  database: SPRING
+  user: dG11c2Vy
+  password: dG11c2Vy
+
+  service:
+    type: ClusterIP
+    port: *mysqlPort
+
+  resources:
+    limits:
+      cpu: 0.5
+      memory: 1Gi
+    requests:
+      cpu: 0.5
+      memory: 1Gi
+
+  livenessProbe:
+    enabled: true
+    tcpSocket:
+      port: *mysqlPort
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 1
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    enabled: true
+    tcpSocket:
+      port: *mysqlPort
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 1
+    successThreshold: 1
+    failureThreshold: 5
+  startupProbe:
+    enabled: true
+    tcpSocket:
+      port: *mysqlPort
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 1
+    successThreshold: 1
+    failureThreshold: 10

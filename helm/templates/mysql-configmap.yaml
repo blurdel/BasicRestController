@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: mysql-config
 data:
-  mysql-url: mysql-service
+  mysql-url: {{ .Values.mysql.serviceUrl }}

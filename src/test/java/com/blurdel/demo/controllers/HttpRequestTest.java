@@ -2,16 +2,17 @@ package com.blurdel.demo.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HttpRequestTest {
 
-    @Value(value="${local.server.port}")
+    @LocalServerPort
     private int port;
 
     @Autowired
@@ -19,7 +20,9 @@ public class HttpRequestTest {
 
     @Test
     public void testHelloDefault() throws Exception {
-        assertThat(restTemplate.getForObject("http://localhost:" + port + "/hello", String.class)).contains("Hello World!");
+        String body = restTemplate.getForObject("http://localhost:" + port + "/hello", String.class);
+        assertThat(body).contains("Hello World!");
+        assertEquals("Hello World!", body);
     }
 
 }
