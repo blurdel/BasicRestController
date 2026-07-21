@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/data/mysql8-{{ .Chart.Name }}"
+    path: "/mnt/data/containers/mysql8-{{ .Chart.Name }}"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
