@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}-{{ .Release.Name }}-deployment
+  name: {{ .Chart.Name }}-{{ .Release.Name }}
   labels:
     app: {{ .Chart.Name }}-{{ .Release.Name }}
 spec:
@@ -40,6 +40,11 @@ spec:
           value: "false"
         - name: SPRING_PROFILES_ACTIVE
           value: rke
+        # <service-name>.<namespace>.svc.cluster.local
+        # - name: SPRING_DATASOURCE_URL
+        #   value: "jdbc:mysql://mysql-service.mysql.svc.cluster.local:3306/SPRING?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"
+        - name: LOGGING_LEVEL_COM_BLURDEL_DEMO
+          value: "DEBUG"
         {{- with .Values.livenessProbe }}
         livenessProbe:
           {{- toYaml . | nindent 10 }}
