@@ -1,10 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  # annotations:
-  #   cert-manager.io/issuer: {{ .Values.ingress.issuerName }}
+  annotations:
+    cert-manager.io/issuer: {{ .Values.ingress.issuerName }}
   name: {{ .Chart.Name }}-{{ .Release.Name }}
-  # namespace: {{ .Release.Namespace }}
 spec:
   rules:
   - host: {{ .Values.ingress.host }}
@@ -17,7 +16,7 @@ spec:
               number: {{ .Values.service.port }}
         path: /
         pathType: Prefix
-  # tls:
-  # - hosts:
-  #   - hello.local
-  #   secretName: {{ .Values.ingress.tlsSecret }}
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host }}
+    secretName: {{ .Values.ingress.tlsSecret }}

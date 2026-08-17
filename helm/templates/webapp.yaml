@@ -57,13 +57,10 @@ spec:
         startupProbe:
           {{- toYaml . | nindent 10 }}
         {{- end }}
+        {{- with .Values.resources }}
         resources:
-          requests:
-            memory: "128Mi"
-            cpu: "250m"
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -78,6 +75,5 @@ spec:
   ports:
     - name: http
       port: {{ .Values.service.port }}
-      # nodePort: 30100
     - name: debug-port
       port: {{ .Values.service.debugPort }}
