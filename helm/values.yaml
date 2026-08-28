@@ -36,7 +36,6 @@ livenessProbe:
   periodSeconds: 10
   timeoutSeconds: 5
   failureThreshold: 3
-  successThreshold: 1
 readinessProbe:
   httpGet:
     path: /health
@@ -45,16 +44,14 @@ readinessProbe:
   periodSeconds: 5
   timeoutSeconds: 3
   failureThreshold: 2
-  successThreshold: 1
 startupProbe:
   httpGet:
     path: /health
     port: *appPort
-  initialDelaySeconds: 15
-  periodSeconds: 10
+  initialDelaySeconds: 10
+  periodSeconds: 5
   timeoutSeconds: 3
-  failureThreshold: 1
-  successThreshold: 1
+  failureThreshold: 12
 
 # MySQL Deployment
 mysql:
