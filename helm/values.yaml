@@ -1,6 +1,5 @@
 # Default values for the deployment
 global:
-  appPort: &appPort 8888
   mysqlPort: &mysqlPort 3306
 
 replicas: 1
@@ -9,6 +8,8 @@ image:
   version: 1.0.5
   pullPolicy: IfNotPresent
 
+podLabels: []
+
 ingress:
   host: basic-rest-controller.local
   issuerName: basic-rest-controller-ingress
@@ -16,8 +17,7 @@ ingress:
 
 service:
   type: ClusterIP
-  port: *appPort
-  targetPort: *appPort
+  port: 8888
   debugPort: 5005
 
 resources:
@@ -31,7 +31,7 @@ resources:
 livenessProbe:
   httpGet:
     path: /health
-    port: *appPort
+    port: http
   initialDelaySeconds: 30
   periodSeconds: 10
   timeoutSeconds: 5
@@ -39,7 +39,7 @@ livenessProbe:
 readinessProbe:
   httpGet:
     path: /health
-    port: *appPort
+    port: http
   initialDelaySeconds: 10
   periodSeconds: 5
   timeoutSeconds: 3
@@ -47,7 +47,7 @@ readinessProbe:
 startupProbe:
   httpGet:
     path: /health
-    port: *appPort
+    port: http
   initialDelaySeconds: 10
   periodSeconds: 5
   timeoutSeconds: 3
@@ -83,7 +83,6 @@ mysql:
     initialDelaySeconds: 5
     periodSeconds: 10
     timeoutSeconds: 1
-    successThreshold: 1
     failureThreshold: 3
   readinessProbe:
     tcpSocket:
@@ -91,7 +90,6 @@ mysql:
     initialDelaySeconds: 5
     periodSeconds: 10
     timeoutSeconds: 1
-    successThreshold: 1
     failureThreshold: 5
   startupProbe:
     tcpSocket:
@@ -99,5 +97,4 @@ mysql:
     initialDelaySeconds: 15
     periodSeconds: 10
     timeoutSeconds: 1
-    successThreshold: 1
     failureThreshold: 10

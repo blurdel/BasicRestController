@@ -11,6 +11,10 @@ spec:
       app: {{ .Chart.Name }}-{{ .Release.Name }}
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
         app: {{ .Chart.Name }}-{{ .Release.Name }}
     spec:
@@ -61,19 +65,3 @@ spec:
         resources:
           {{- toYaml . | nindent 10 }}
         {{- end }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Chart.Name }}-{{ .Release.Name }}
-  labels:
-    app: {{ .Chart.Name }}-{{ .Release.Name }}
-spec:
-  type: {{ .Values.service.type }}
-  selector:
-    app: {{ .Chart.Name }}-{{ .Release.Name }}
-  ports:
-    - name: http
-      port: {{ .Values.service.port }}
-    - name: debug-port
-      port: {{ .Values.service.debugPort }}
