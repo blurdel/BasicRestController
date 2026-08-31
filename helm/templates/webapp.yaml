@@ -11,6 +11,10 @@ spec:
       app: {{ .Chart.Name }}-{{ .Release.Name }}
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
         app: {{ .Chart.Name }}-{{ .Release.Name }}
     spec:
@@ -57,27 +61,7 @@ spec:
         startupProbe:
           {{- toYaml . | nindent 10 }}
         {{- end }}
+        {{- with .Values.resources }}
         resources:
-          requests:
-            memory: "128Mi"
-            cpu: "250m"
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Chart.Name }}-{{ .Release.Name }}
-  labels:
-    app: {{ .Chart.Name }}-{{ .Release.Name }}
-spec:
-  type: {{ .Values.service.type }}
-  selector:
-    app: {{ .Chart.Name }}-{{ .Release.Name }}
-  ports:
-    - name: http
-      port: {{ .Values.service.port }}
-      # nodePort: 30100
-    - name: debug-port
-      port: {{ .Values.service.debugPort }}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}

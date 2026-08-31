@@ -1,50 +1,56 @@
-# Default values for mysql8
+# Default values for the deployment
 global:
-  appPort: &appPort 8888
   mysqlPort: &mysqlPort 3306
 
 replicas: 1
 image:
   repository: localhost:5000/basic-rest-controller
-  version: 1.0.4
+  version: 1.0.5
   pullPolicy: IfNotPresent
+
+podLabels: []
 
 ingress:
   host: basic-rest-controller.local
+  issuerName: basic-rest-controller-ingress
+  tlsSecret: basic-rest-controller-tls-data
 
 service:
   type: ClusterIP
-  port: *appPort
-  targetPort: *appPort
+  port: 8888
   debugPort: 5005
+
+resources:
+  limits:
+    memory: 512Mi
+  requests:
+    cpu: 256m
+    memory: 256Mi
 
 livenessProbe:
   httpGet:
     path: /health
-    port: *appPort
+    port: http
   initialDelaySeconds: 30
   periodSeconds: 10
   timeoutSeconds: 5
   failureThreshold: 3
-  successThreshold: 1
 readinessProbe:
   httpGet:
     path: /health
-    port: *appPort
+    port: http
   initialDelaySeconds: 10
   periodSeconds: 5
   timeoutSeconds: 3
   failureThreshold: 2
-  successThreshold: 1
 startupProbe:
   httpGet:
     path: /health
-    port: *appPort
-  initialDelaySeconds: 15
-  periodSeconds: 10
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
   timeoutSeconds: 3
-  failureThreshold: 1
-  successThreshold: 1
+  failureThreshold: 12
 
 # MySQL Deployment
 mysql:
@@ -64,7 +70,6 @@ mysql:
 
   resources:
     limits:
-      cpu: 0.5
       memory: 1Gi
     requests:
       cpu: 0.5
@@ -76,7 +81,6 @@ mysql:
     initialDelaySeconds: 5
     periodSeconds: 10
     timeoutSeconds: 1
-    successThreshold: 1
     failureThreshold: 3
   readinessProbe:
     tcpSocket:
@@ -84,7 +88,6 @@ mysql:
     initialDelaySeconds: 5
     periodSeconds: 10
     timeoutSeconds: 1
-    successThreshold: 1
     failureThreshold: 5
   startupProbe:
     tcpSocket:
@@ -92,5 +95,4 @@ mysql:
     initialDelaySeconds: 15
     periodSeconds: 10
     timeoutSeconds: 1
-    successThreshold: 1
     failureThreshold: 10

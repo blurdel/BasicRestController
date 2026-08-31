@@ -1,9 +1,6 @@
 FROM maven:3.9.6-eclipse-temurin-21-jammy AS builder
 
-# Set application jar-filename
-ARG APP_VERSION=0.0.0
-
-ARG JAR_FILE=target/basic-rest-controller-${APP_VERSION}.jar
+ARG JAR_FILE=target/basic-rest-controller-*.jar
 
 WORKDIR /application
 
