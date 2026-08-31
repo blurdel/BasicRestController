@@ -22,7 +22,6 @@ service:
 
 resources:
   limits:
-    cpu: 500m
     memory: 512Mi
   requests:
     cpu: 256m
@@ -71,7 +70,6 @@ mysql:
 
   resources:
     limits:
-      cpu: 1.0
       memory: 1Gi
     requests:
       cpu: 0.5
