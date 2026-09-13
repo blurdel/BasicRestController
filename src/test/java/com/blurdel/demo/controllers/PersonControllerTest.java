@@ -41,13 +41,6 @@ class PersonControllerTest {
 	private PersonService service;
 
 
-
-//	@BeforeEach
-//	void setup(WebApplicationContext wac) {
-//		this.mockMvc = MockMvcBuilders.standaloneSetup(new PersonController()).build();
-//		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-//	}
-
 	@BeforeEach
 	void cleanup() throws Exception {
 		service.deleteAll();
@@ -81,7 +74,7 @@ class PersonControllerTest {
 	@Test
 	void testRestGetAll() throws Exception {
 		// Insert an entity to GET
-		Optional<Person> added = service.add(new Person("Tana", 11));
+		Optional<Person> added = service.add(new Person("Tana", 13));
 		if (added.isEmpty()) {
 			fail("added.isEmpty()");
 		}
@@ -106,7 +99,7 @@ class PersonControllerTest {
 	@Test
 	void testRestGetOne() throws Exception {
 		// Insert an entity to GET
-		Optional<Person> added = service.add(new Person("Cami", 13));
+		Optional<Person> added = service.add(new Person("Cami", 14));
 		if (added.isEmpty()) {
 			fail("added.isEmpty()");
 		}
@@ -149,7 +142,6 @@ class PersonControllerTest {
 		person.get().setName("blurdel");
 		person.get().setAge(115);
 
-//		ResultActions resultActions = mockMvc.perform(put("/person/{id}", updated.getId())
 		mockMvc.perform(put("/person/{id}", person.get().getId())
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)
@@ -160,16 +152,12 @@ class PersonControllerTest {
 				.andExpect(jsonPath("$.id").value(person.get().getId()))
 				.andExpect(jsonPath("$.name").value(person.get().getName()))
 				.andExpect(jsonPath("$.age").value(person.get().getAge()));
-
-//		MvcResult result = resultActions.andReturn();
-//		String body = result.getResponse().getContentAsString();
-//		Person response = objMapper.readValue(body, Person.class);
 	}
 
 	@Test
 	void testRestDeleteOne() throws Exception {
 		// Insert an entity to DELETE
-		Optional<Person> added = service.add(new Person("Scooter", 10));
+		Optional<Person> added = service.add(new Person("Scooter", 12));
 		if (added.isEmpty()) {
 			fail("added.isEmpty()");
 		}
