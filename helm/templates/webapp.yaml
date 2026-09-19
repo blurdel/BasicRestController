@@ -16,10 +16,21 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
+      {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
         app: {{ .Chart.Name }}-{{ .Release.Name }}
     spec:
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - name: {{ .Chart.Name }}
+        {{- with .Values.securityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
@@ -44,9 +55,6 @@ spec:
           value: "false"
         - name: SPRING_PROFILES_ACTIVE
           value: rke
-        # <service-name>.<namespace>.svc.cluster.local
-        # - name: SPRING_DATASOURCE_URL
-        #   value: "jdbc:mysql://mysql-service.mysql.svc.cluster.local:3306/SPRING?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"
         - name: LOGGING_LEVEL_COM_BLURDEL_DEMO
           value: "DEBUG"
         {{- with .Values.livenessProbe }}
@@ -65,3 +73,11 @@ spec:
         resources:
           {{- toYaml . | nindent 10 }}
         {{- end }}
+        {{- with .Values.volumeMounts }}
+        volumeMounts:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

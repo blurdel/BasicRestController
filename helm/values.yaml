@@ -10,15 +10,30 @@ image:
 
 podLabels: []
 
-ingress:
-  host: basic-rest-controller.local
-  issuerName: basic-rest-controller-ingress
-  tlsSecret: basic-rest-controller-tls-data
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  privileged: false
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 9999
+  runAsGroup: 9999
 
 service:
   type: ClusterIP
   port: 8888
   debugPort: 5005
+
+ingress:
+  host: basic-rest-controller.local
+  issuerName: basic-rest-controller-ingress
+  tlsSecret: basic-rest-controller-tls-data
 
 resources:
   limits:
@@ -51,6 +66,16 @@ startupProbe:
   periodSeconds: 5
   timeoutSeconds: 3
   failureThreshold: 12
+
+volumeMounts:
+- name: tmp
+  mountPath: /tmp
+
+volumes:
+- name: tmp
+  emptyDir: {}
+
+
 
 # MySQL Deployment
 mysql:
