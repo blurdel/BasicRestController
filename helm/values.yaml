@@ -67,6 +67,16 @@ startupProbe:
   timeoutSeconds: 3
   failureThreshold: 12
 
+volumeMounts:
+- name: tmp
+  mountPath: /tmp
+
+volumes:
+- name: tmp
+  emptyDir: {}
+
+
+
 # MySQL Deployment
 mysql:
   image:
