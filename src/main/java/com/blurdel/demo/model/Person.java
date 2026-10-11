@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Version;
 import lombok.Data;
 
 @Data
@@ -21,9 +20,6 @@ public class Person {
 
 	@Column(nullable=false)
 	private int age;
-
-	@Version
-	private Long version;
 
 
 	public Person() {

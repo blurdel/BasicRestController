@@ -14,4 +14,8 @@ Basic Spring Boot REST controller example with a MySQL database
     docker run --rm -d --name basic-rest-controller -p 8888:8888 basic-rest-controller:1.0.0
 
 ### helm chart
-    helm install <release> ./helm --namespace <name>
+    # Install
+    helm install <release> ./helm -n <namespace> --create-namespace
+
+    # Uninstall
+    helm uninstall <release> -n <namespace>

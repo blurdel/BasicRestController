@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/blurdel/BasicRestController'
-    targetRevision: main
+    targetRevision: HEAD
     path: helm
     helm:
       valueFiles:

@@ -33,7 +33,7 @@ public class PersonController {
 		return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{id:\\d+}")
 	public ResponseEntity<?> getPerson(@PathVariable final Long id) {
 		log.info("PersonController GET called for id: {}", id);
 		Optional<Person> person = service.findById(id);
@@ -55,7 +55,7 @@ public class PersonController {
 		return new ResponseEntity<>(saved, HttpStatus.CREATED);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/{id:\\d+}")
 	public ResponseEntity<?> updatePerson(@PathVariable final Long id, @RequestBody final Person payload) {
 		log.info("PersonController PUT called for id {} with payload {}", id, payload.toString());
 		if (!id.equals(payload.getId())) {
@@ -70,7 +70,7 @@ public class PersonController {
 		return new ResponseEntity<>(updated, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{id:\\d+}")
 	public ResponseEntity<?> deletePerson(@PathVariable final Long id) {
 		log.info("PersonController DELETE called for id {}", id);
 		Optional<Person> deleted = service.delete(id);
