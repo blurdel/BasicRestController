@@ -5,7 +5,7 @@ metadata:
   labels:
     app: {{ .Chart.Name }}-{{ .Release.Name }}
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: 1
   selector:
     matchLabels:
       app: {{ .Chart.Name }}-{{ .Release.Name }}
@@ -31,7 +31,7 @@ spec:
         securityContext:
           {{- toYaml . | nindent 10 }}
         {{- end }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
+        image: {{ .Values.image.repository }}:{{ .Values.image.version }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - name: http
@@ -43,18 +43,20 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mysql-secret
-              key: mysql-user
+              key: MYSQL_USER
         - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mysql-secret
-              key: mysql-password
+              key: MYSQL_PASSWORD
         - name: SPRING_JPA_HIBERNATE_DDLAUTO
-          value: update
+          value: "{{ .Values.spring.jpaDDLAuto }}"
         - name: SPRING_JPA_PROPERTIES_HIBERNATE_SHOW_SQL
           value: "false"
+        - name: SPRING_DATASOURCE_URL
+          value: "{{ .Values.spring.datasourceUrl }}"
         - name: SPRING_PROFILES_ACTIVE
-          value: rke
+          value: "{{ .Values.spring.profilesActive }}"
         - name: LOGGING_LEVEL_COM_BLURDEL_DEMO
           value: "DEBUG"
         {{- with .Values.livenessProbe }}
@@ -75,9 +77,9 @@ spec:
         {{- end }}
         {{- with .Values.volumeMounts }}
         volumeMounts:
-          {{- toYaml . | nindent 10 }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- with .Values.volumes }}
       volumes:
-        {{- toYaml . | nindent 8 }}
+      {{- toYaml . | nindent 6 }}
       {{- end }}
