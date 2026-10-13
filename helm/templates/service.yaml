@@ -9,7 +9,9 @@ spec:
   selector:
     app: {{ .Chart.Name }}-{{ .Release.Name }}
   ports:
-    - name: http
+    - name: http-port
       port: {{ .Values.service.port }}
+      targetPort: http
     - name: debug-port
       port: {{ .Values.service.debugPort }}
+      targetPort: debug

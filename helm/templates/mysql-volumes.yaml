@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-{{ .Chart.Name }}-volume
+  name: pv-rest-controller-mysql-volume
   labels:
     type: local
 spec:
@@ -16,9 +16,9 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-{{ .Chart.Name }}
+  name: pvc-rest-controller-mysql
 spec:
-  volumeName: pv-{{ .Chart.Name }}-volume # Force bind to this PV by name
+  volumeName: pv-rest-controller-mysql-volume # Force bind to this PV by name
   storageClassName: manual
   accessModes:
     - ReadWriteOnce
