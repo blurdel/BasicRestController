@@ -57,6 +57,7 @@ spring:
   profilesActive: rke
   datasourceUrl: "jdbc:mysql://mysql-service.rest.svc.cluster.local:3306/SPRING?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"
   jpaDDLAuto: update
+  debugEnabled: true
 
 image:
   repository: localhost:5000/basic-rest-controller
