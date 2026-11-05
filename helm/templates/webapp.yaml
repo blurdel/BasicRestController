@@ -59,6 +59,10 @@ spec:
           value: "{{ .Values.spring.profilesActive }}"
         - name: LOGGING_LEVEL_COM_BLURDEL_DEMO
           value: "DEBUG"
+        {{- if .Values.spring.debugEnabled }}
+        - name: JAVA_TOOL_OPTIONS
+          value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:{{ .Values.service.debugPort }}"
+        {{- end }}
         {{- with .Values.livenessProbe }}
         livenessProbe:
           {{- toYaml . | nindent 10 }}
